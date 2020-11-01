@@ -1,0 +1,20 @@
+service: i-accounting-api
+app: i-accounting-api
+provider:
+  name: aws
+  stage: dev
+  region: ap-northeast-1
+functions:
+  app:
+    handler: sls.app
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: true
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+plugins:
+  - serverless-offline
