@@ -1,17 +1,6 @@
 service: i-accounting-api
 app: i-accounting-api
 
-custom:
-  dynamodb:
-    stages:
-      - dev
-    start:
-      port: 8000
-      inMemory: true
-      migrate: true
-    migration:
-      dir: offline/migrations
-
 provider:
   name: aws
   stage: dev
@@ -64,3 +53,19 @@ resources:
 plugins:
   - serverless-dynamodb-local
   - serverless-offline
+
+custom:
+  dynamodb:
+    stages:
+      - dev
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+    migration:
+      dir: offline/migrations
+
+package:
+  exclude:
+    - .dynamodb/**
+    - offline/**
