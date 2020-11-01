@@ -2,20 +2,22 @@
   "name": "i-accounting-api",
   "version": "1.0.0",
   "description": "",
-  "main": "sls.js",
+  "main": "src/index.js",
   "scripts": {
-    "dev": "serverless offline",
+    "start": "serverless offline start",
     "deploy": "serverless deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Francis",
   "license": "MIT",
   "dependencies": {
+    "aws-sdk": "^2.437.0",
     "koa": "^2.11.0",
     "koa-router": "^8.0.8",
     "serverless-http": "^2.6.0"
   },
   "devDependencies": {
+    "serverless-dynamodb-local": "^0.2.18",
     "serverless-offline": "^6.8.0"
   }
 }
