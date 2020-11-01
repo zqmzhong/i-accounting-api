@@ -2,9 +2,10 @@
   "name": "i-accounting-api",
   "version": "1.0.0",
   "description": "",
-  "main": "sls.js",
+  "main": "src/index.js",
   "scripts": {
-    "dev": "serverless offline",
+    "start": "serverless offline start",
+    "build": "serverless package",
     "deploy": "serverless deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,6 +17,8 @@
     "serverless-http": "^2.6.0"
   },
   "devDependencies": {
+    "aws-sdk": "^2.437.0",
+    "serverless-dynamodb-local": "^0.2.18",
     "serverless-offline": "^6.8.0"
   }
 }
