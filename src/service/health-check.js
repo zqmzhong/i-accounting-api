@@ -1,12 +1,5 @@
-const fs = require('fs');
-
-function index(ctx) {
-    ctx.response.type = 'html';
-    ctx.response.body = fs.createReadStream('./public/index.html');
-}
-
 function health(ctx) {
-    ctx.body = "Hello World!";
+    ctx.body = "i-accounting-api is running on AWS lambda. " + new Date().toLocaleString();
 }
 
-module.exports = { index, health };
+module.exports = { health };
