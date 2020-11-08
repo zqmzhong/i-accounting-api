@@ -20,13 +20,19 @@ async function getBillById(ctx) {
 }
 
 async function createBill(ctx) {
-    const body = ctx.request.body;
-    const { time, amount, type, category, account, note } = body;
+    const newBill = ctx.request.body;
 
     const id = nanoid(11);
     const params = {
         TableName,
-        Item: { id, time, amount, type, category, account, note },
+        Item: {
+            id,
+            ...newBill,
+            ...{
+                category: newBill.category.toString(),
+                account: newBill.account.toString(),
+            },
+        },
     };
 
     let status = true;
