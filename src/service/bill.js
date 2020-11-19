@@ -21,17 +21,19 @@ async function getBillById(ctx) {
 
 async function createBill(ctx) {
     const newBill = ctx.request.body;
+    const { id, time, amount, type, category, account, note } = newBill;
 
     const id = nanoid(11);
     const params = {
         TableName,
-        Item: {
+        Item: { 
             id,
-            ...newBill,
-            ...{
-                category: newBill.category.toString(),
-                account: newBill.account.toString(),
-            },
+            time,
+            amount,
+            type,
+            category: category.toString(),
+            account: account.toString(),
+            note,
         },
     };
 
@@ -43,7 +45,7 @@ async function createBill(ctx) {
 
     ctx.body = {
         status,
-        data: { id, ...body }
+        data: { id, ...newBill }
     };
 }
 
@@ -66,19 +68,28 @@ async function updateBill(ctx) {
 }
 
 async function deleteBill(ctx) {
-    const { id } = ctx.params;
-    const params = {
-        TableName,
-        Key: { id },
-    };
+    const idList = ctx.request.body;
+
+    const deleteItems = idList.map(id => {
+        return {
+            DeleteRequest: {
+                Key: { id }
+            }
+        };
+    });
+
+    const params = { RequestItems: {} };
+    params.RequestItems[TableName] = deleteItems;
 
     let status = true;
-    await dynamodb.delete(params).promise().catch(error => {
-        console.error(error);
+    const data = await dynamodb.batchWrite(params).promise().catch(err => {
+        console.error(err);
         status = false;
-    });
+    })
+
     ctx.body = {
         status,
+        data,
     };
 }
 
