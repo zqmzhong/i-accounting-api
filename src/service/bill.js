@@ -21,7 +21,7 @@ async function getBillById(ctx) {
 
 async function createBill(ctx) {
     const newBill = ctx.request.body;
-    const { id, time, amount, type, category, account, note } = newBill;
+    const { time, amount, type, category, account, note } = newBill;
 
     const id = nanoid(11);
     const params = {
@@ -37,34 +37,34 @@ async function createBill(ctx) {
         },
     };
 
-    let status = true;
     await dynamodb.put(params).promise().catch(error => {
         console.error(error);
-        status = false;
+        ctx.throw(error);
     });
 
     ctx.body = {
-        status,
+        message: "Create bill success.",
         data: { id, ...newBill }
     };
 }
 
 async function updateBill(ctx) {
     const { id } = ctx.params;
-    const { time, amount, type, category, account, note } = ctx.request.body;
+    const body = ctx.request.body;
     const params = {
         TableName,
-        Item: { id, time, amount, type, category, account, note },
-        ReturnValues: 'ALL_OLD',
+        Item: { id, ...body },
     };
 
-    let status = true;
     await dynamodb.put(params).promise().catch(error => {
         console.error(error);
-        status = false;
+        ctx.throw(error)
     });
 
-    ctx.body = { status };
+    ctx.body = { 
+        message: "Update bill success.",
+        data: { id, ...body },
+    };
 }
 
 async function deleteBill(ctx) {
@@ -81,14 +81,13 @@ async function deleteBill(ctx) {
     const params = { RequestItems: {} };
     params.RequestItems[TableName] = deleteItems;
 
-    let status = true;
-    const data = await dynamodb.batchWrite(params).promise().catch(err => {
-        console.error(err);
-        status = false;
+    const data = await dynamodb.batchWrite(params).promise().catch(error => {
+        console.error(error);
+        ctx.throw(error);
     })
 
     ctx.body = {
-        status,
+        message: "Delete bill(s) success.",
         data,
     };
 }
