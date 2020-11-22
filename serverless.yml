@@ -58,6 +58,8 @@ plugins:
   - serverless-offline
 
 custom:
+  serverless-offline:
+    httpPort: 8080
   dynamodb:
     stages:
       - dev
