@@ -29,10 +29,12 @@ functions:
           path: /
           method: ANY
           cors: true
+          authorizer: aws_iam
       - http:
           path: /{proxy+}
           method: ANY
           cors: true
+          authorizer: aws_iam
 
 resources:
   Resources:
